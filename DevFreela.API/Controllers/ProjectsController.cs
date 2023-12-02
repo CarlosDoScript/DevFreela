@@ -1,7 +1,8 @@
 ﻿using DevFreela.API.Models;
+using DevFreela.Application.InputModels;
+using DevFreela.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace DevFreela.API.Controllers
 {
@@ -9,38 +10,49 @@ namespace DevFreela.API.Controllers
     [ApiController]
     public class ProjectsController : ControllerBase
     {
-        private readonly OpeningTimeOption _options;
-        public ProjectsController(IOptions<OpeningTimeOption> options)
+        private readonly IProjectService _projectService;
+
+        public ProjectsController(IProjectService projectService)
         {
-            _options = options.Value;
+            _projectService = projectService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(string query)
         {
-            return Ok(); 
+            var projects = _projectService.GetAll(query);
+            return Ok(projects); 
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            return Ok();
+            var project = _projectService.GetById(id);
+
+            if (project == null)
+                return NotFound();
+
+            return Ok(project);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateProjectModel createProject)
+        public async Task<IActionResult> Post([FromBody] NewProjectInputModel inputModel)
         {
-            if (createProject.Title.Length > 50)
+            if (inputModel.Title.Length > 50)
                 return BadRequest();
 
-            return Ok();
+            var id = _projectService.Create(inputModel);
+
+            return CreatedAtAction(nameof(GetById), new {id = id },inputModel);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] UpdateProjectModel updateProject)
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateProjectInputModel inputModel)
         {
-            if (updateProject.Description.Length > 200)
+            if (inputModel.Description.Length > 200)
                 return BadRequest();
+
+            _projectService.Update(inputModel);
 
             return NoContent();
         }
@@ -48,24 +60,32 @@ namespace DevFreela.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
+            _projectService.Delete(id);
+            
             return NoContent();
         }
 
         [HttpPost("{id}/comments")]
-        public async Task<IActionResult> PostComment(int id, [FromBody] CreateCommentModel createComment)
+        public async Task<IActionResult> PostComment(int id, [FromBody] CreateCommentInputModel inputModel)
         {
+            _projectService.CreateComment(inputModel);
+
             return NoContent();
         }
 
         [HttpPut("{id}/start")]
         public async Task<IActionResult> Start(int id)
         {
+            _projectService.Start(id);
+
             return NoContent();
         }
 
         [HttpPut("{id}/finish")]
         public async Task<IActionResult> Finish(int id)
         {
+            _projectService.Finish(id);
+
             return NoContent();
         }
     }
