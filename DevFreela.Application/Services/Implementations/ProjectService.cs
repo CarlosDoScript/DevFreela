@@ -3,11 +3,7 @@ using DevFreela.Application.Services.Interfaces;
 using DevFreela.Application.ViewModels;
 using DevFreela.Core.Entities;
 using DevFreela.Infrastructure.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace DevFreela.Application.Services.Implementations
 {
@@ -19,78 +15,93 @@ namespace DevFreela.Application.Services.Implementations
             _dbContext = dbContext;
         }
 
-        public int Create(NewProjectInputModel inputModel)
+        public async Task<int> Create(NewProjectInputModel inputModel)
         {
             var project = new Project(inputModel.Title, inputModel.Description, inputModel.IdClient, inputModel.IdFreelance, inputModel.TotalCost);
 
             _dbContext.Projects.Add(project);
+            await _dbContext.SaveChangesAsync();
 
             return project.Id;
         }
 
-        public void CreateComment(CreateCommentInputModel inputModel)
+        public async Task CreateComment(CreateCommentInputModel inputModel)
         {
             var comment = new ProjectComment(inputModel.Content, inputModel.IdProject, inputModel.IdUser);
 
             _dbContext.ProjectComments.Add(comment);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            var project = _dbContext.Projects.SingleOrDefault(p => p.Id == id);
+            var project = await _dbContext.Projects.SingleOrDefaultAsync(p => p.Id == id);
 
             project.Cancel();
+
+            await _dbContext.SaveChangesAsync();
         }
 
-        public void Finish(int id)
+        public async Task Finish(int id)
         {
-            var project = _dbContext.Projects.SingleOrDefault(p => p.Id == id);
+            var project = await _dbContext.Projects.SingleOrDefaultAsync(p => p.Id == id);
 
             project.Finish();
+
+            await _dbContext.SaveChangesAsync();
         }
 
-        public List<ProjectViewModel> GetAll(string query)
+        public async Task<List<ProjectViewModel>> GetAll(string query)
         {
-            var projects = _dbContext.Projects;
+            var projects =  _dbContext.Projects;
 
-            var projectsViewModel = projects
+            var projectsViewModel = await projects
                 .Select(p => new ProjectViewModel(p.Id, p.Title, p.CreatedAt))
-                .ToList();
+                .ToListAsync();
 
             return projectsViewModel;
         }
 
-        public ProjectDetailsViewModel GetById(int id)
+        public async Task<ProjectDetailsViewModel> GetById(int id)
         {
-            var project = _dbContext.Projects.SingleOrDefault(p => p.Id == id);
+            var project = await _dbContext.Projects
+                .Include(p => p.Client)
+                .Include(p => p.Freelancer)
+                .SingleOrDefaultAsync(p => p.Id == id);
 
             if (project == null)
                 return null;
 
-            var projectDetailsViewModel = new ProjectDetailsViewModel(
+            var projectDetailsViewModel =  new ProjectDetailsViewModel(
                 project.Id,
                 project.Title,
                 project.Description,
                 project.TotalCost,
                 project.StartedAt,
-                project.FinishedAt
+                project.FinishedAt,
+                project.Client.FullName,
+                project.Freelancer.FullName
                 );
 
             return projectDetailsViewModel;
         }
 
-        public void Start(int id)
+        public async Task Start(int id)
         {
             var project = _dbContext.Projects.SingleOrDefault(p => p.Id == id);
 
             project.Start();
+
+            await _dbContext.SaveChangesAsync();
         }
 
-        public void Update(UpdateProjectInputModel inputModel)
+        public async Task Update(UpdateProjectInputModel inputModel)
         {
-            var project = _dbContext.Projects.SingleOrDefault(p => p.Id == inputModel.Id);
+            var project = await _dbContext.Projects.SingleOrDefaultAsync(p => p.Id == inputModel.Id);
 
             project.Update(inputModel.Title, inputModel.Description, inputModel.TotalCost);
+
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

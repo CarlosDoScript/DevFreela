@@ -3,6 +3,7 @@ using DevFreela.Application.Services.Interfaces;
 using DevFreela.Application.ViewModels;
 using DevFreela.Core.Entities;
 using DevFreela.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,18 +21,20 @@ namespace DevFreela.Application.Services.Implementations
             _dbContext = dbContext;
         }
 
-        public int Create(CreateUserInputModel inputModel)
+        public async Task<int> Create(CreateUserInputModel inputModel)
         {
             var user = new User(inputModel.FullName,inputModel.Email,inputModel.BirthDate);
 
             _dbContext.Users.Add(user);
 
+            await _dbContext.SaveChangesAsync();
+
             return user.Id;
         }
 
-        public UserViewModel GetUser(int id)
+        public async Task<UserViewModel> GetUser(int id)
         {
-            var user = _dbContext.Users.SingleOrDefault(u => u.Id == id);
+            var user = await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id);
 
             if (user == null)
             {

@@ -1,6 +1,7 @@
 ﻿using DevFreela.Application.Services.Interfaces;
 using DevFreela.Application.ViewModels;
 using DevFreela.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace DevFreela.Application.Services.Implementations
 {
@@ -12,13 +13,13 @@ namespace DevFreela.Application.Services.Implementations
             _dbContext = dbContext;
         }
 
-        public List<SkillViewModel> GetAll()
+        public async Task<List<SkillViewModel>> GetAll()
         {
             var skill = _dbContext.Skills;
 
-            var skillsViewModel = skill
+            var skillsViewModel = await skill
                 .Select(s => new SkillViewModel(s.Id, s.Description))
-                .ToList();
+                .ToListAsync();
 
             return skillsViewModel;
         }
