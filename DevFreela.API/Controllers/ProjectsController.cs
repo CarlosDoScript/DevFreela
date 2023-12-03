@@ -20,14 +20,14 @@ namespace DevFreela.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(string query)
         {
-            var projects = _projectService.GetAll(query);
+            var projects = await _projectService.GetAll(query);
             return Ok(projects); 
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var project = _projectService.GetById(id);
+            var project = await _projectService.GetById(id);
 
             if (project == null)
                 return NotFound();
@@ -41,7 +41,7 @@ namespace DevFreela.API.Controllers
             if (inputModel.Title.Length > 50)
                 return BadRequest();
 
-            var id = _projectService.Create(inputModel);
+            var id = await _projectService.Create(inputModel);
 
             return CreatedAtAction(nameof(GetById), new {id = id },inputModel);
         }
@@ -52,7 +52,7 @@ namespace DevFreela.API.Controllers
             if (inputModel.Description.Length > 200)
                 return BadRequest();
 
-            _projectService.Update(inputModel);
+           await _projectService.Update(inputModel);
 
             return NoContent();
         }
@@ -60,7 +60,7 @@ namespace DevFreela.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            _projectService.Delete(id);
+            await _projectService.Delete(id);
             
             return NoContent();
         }
@@ -68,7 +68,7 @@ namespace DevFreela.API.Controllers
         [HttpPost("{id}/comments")]
         public async Task<IActionResult> PostComment(int id, [FromBody] CreateCommentInputModel inputModel)
         {
-            _projectService.CreateComment(inputModel);
+           await _projectService.CreateComment(inputModel);
 
             return NoContent();
         }
@@ -76,7 +76,7 @@ namespace DevFreela.API.Controllers
         [HttpPut("{id}/start")]
         public async Task<IActionResult> Start(int id)
         {
-            _projectService.Start(id);
+            await _projectService.Start(id);
 
             return NoContent();
         }
@@ -84,7 +84,7 @@ namespace DevFreela.API.Controllers
         [HttpPut("{id}/finish")]
         public async Task<IActionResult> Finish(int id)
         {
-            _projectService.Finish(id);
+            await _projectService.Finish(id);
 
             return NoContent();
         }
