@@ -1,9 +1,8 @@
-﻿using DevFreela.API.Models;
-using DevFreela.Application.Commands.CreateProject;
+﻿using DevFreela.Application.Commands.CreateProject;
 using DevFreela.Application.InputModels;
-using DevFreela.Application.Services.Interfaces;
+using DevFreela.Application.Queries.GetAllProjects;
+using DevFreela.Application.Queries.GetProjectById;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevFreela.API.Controllers
@@ -12,26 +11,29 @@ namespace DevFreela.API.Controllers
     [ApiController]
     public class ProjectsController : ControllerBase
     {
-        private readonly IProjectService _projectService;
         private readonly IMediator _mediator;
 
-        public ProjectsController(IProjectService projectService,IMediator mediator)
+        public ProjectsController(IMediator mediator)
         {
-            _projectService = projectService;
             _mediator = mediator;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get(string query)
         {
-            var projects = await _projectService.GetAll(query);
-            return Ok(projects); 
+            var getAllProjectQuery = new GetAllProjectsQuery(query);
+
+            var projects = await _mediator.Send(getAllProjectQuery);
+
+            return Ok(projects);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var project = await _projectService.GetById(id);
+            var query = new GetProjectByIdQuery(id);
+
+            var project = await _mediator.Send(query);
 
             if (project == null)
                 return NotFound();
@@ -45,9 +47,9 @@ namespace DevFreela.API.Controllers
             if (command.Title.Length > 50)
                 return BadRequest();
 
-            var id =  await _mediator.Send(command);
+            var id = await _mediator.Send(command);
 
-            return CreatedAtAction(nameof(GetById), new {id = id }, command);
+            return CreatedAtAction(nameof(GetById), new { id = id }, command);
         }
 
         [HttpPut("{id}")]
@@ -65,7 +67,7 @@ namespace DevFreela.API.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _mediator.Send(id);
-            
+
             return NoContent();
         }
 
