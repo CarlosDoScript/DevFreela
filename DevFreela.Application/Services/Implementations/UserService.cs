@@ -21,17 +21,6 @@ namespace DevFreela.Application.Services.Implementations
             _dbContext = dbContext;
         }
 
-        public async Task<int> Create(CreateUserInputModel inputModel)
-        {
-            var user = new User(inputModel.FullName,inputModel.Email,inputModel.BirthDate);
-
-            _dbContext.Users.Add(user);
-
-            await _dbContext.SaveChangesAsync();
-
-            return user.Id;
-        }
-
         public async Task<UserViewModel> GetUser(int id)
         {
             var user = await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id);

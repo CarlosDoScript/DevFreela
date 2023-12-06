@@ -7,11 +7,5 @@ namespace DevFreela.Application.Services.Interfaces
     {
         Task<List<ProjectViewModel>> GetAll(string query);
         Task<ProjectDetailsViewModel> GetById(int id);
-        Task<int> Create(NewProjectInputModel inputModel);
-        Task Update(UpdateProjectInputModel inputModel);
-        Task Delete(int id);
-        Task CreateComment(CreateCommentInputModel inputModel);
-        Task Start(int id);
-        Task Finish(int id);
     }
 }

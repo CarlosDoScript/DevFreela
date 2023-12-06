@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.InputModels
 {
-    public record UpdateProjectInputModel
+    public class UpdateProjectInputModel
     {
         public UpdateProjectInputModel(int id,string title, string description, decimal totalCost)
         {
@@ -16,9 +16,9 @@ namespace DevFreela.Application.InputModels
             TotalCost = totalCost;
         }
 
-        public int Id { get; init; }
-        public string Title { get; init; }
-        public string Description { get; init; }
-        public decimal TotalCost { get; init; }
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public decimal TotalCost { get; set; }
     }
 }

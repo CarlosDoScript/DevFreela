@@ -1,6 +1,6 @@
 ﻿namespace DevFreela.Application.InputModels
 {
-    public record NewProjectInputModel
+    public class NewProjectInputModel
     {
         public NewProjectInputModel(string title, string description, int idClient, int idFreelance, decimal totalCost)
         {
@@ -11,10 +11,10 @@
             TotalCost = totalCost;
         }
 
-        public string Title { get; init; }
-        public string Description { get; init; }
-        public int IdClient { get; init; }
-        public int IdFreelance { get; init; }
-        public decimal TotalCost { get; init; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public int IdClient { get; set; }
+        public int IdFreelance { get; set; }
+        public decimal TotalCost { get; set; }
     }
 }
