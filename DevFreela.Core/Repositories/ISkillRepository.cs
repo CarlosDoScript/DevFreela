@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Core.Repositories
 {
-    public interface IProjectRepository
+    public interface ISkillRepository
     {
-        Task<List<Project>> GetAll();
-        Task<Project> GetById(int id);
+        Task<List<Skill>> GetAll();
     }
 }
