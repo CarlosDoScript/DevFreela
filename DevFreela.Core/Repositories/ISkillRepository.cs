@@ -9,6 +9,6 @@ namespace DevFreela.Core.Repositories
 {
     public interface ISkillRepository
     {
-        Task<List<Skill>> GetAll();
+        Task<List<Skill>> GetAllAsync();
     }
 }

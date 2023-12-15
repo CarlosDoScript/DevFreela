@@ -18,12 +18,12 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<List<Project>> GetAll()
+        public async Task<List<Project>> GetAllAsync()
         {
             return await _dbContext.Projects.ToListAsync();
         }
 
-        public async Task<Project> GetById(int id)
+        public async Task<Project> GetByIdAsync(int id)
         {
             return await _dbContext.Projects
              .Include(p => p.Client)

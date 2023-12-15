@@ -13,7 +13,7 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<List<Skill>> GetAll()
+        public async Task<List<Skill>> GetAllAsync()
         {
             return await _dbContext.Skills.ToListAsync();
         }
