@@ -15,7 +15,7 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
 
         public async Task<List<Skill>> GetAllAsync()
         {
-            return await _dbContext.Skills.ToListAsync();
+            return await _dbContext.Skills.AsNoTracking().ToListAsync();
         }
     }
 }
