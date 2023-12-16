@@ -32,7 +32,7 @@ namespace DevFreela.API.Controllers
         {
             var id = _mediator.Send(command);
 
-            return CreatedAtAction(nameof(GetById), new { id = 1 }, command);
+            return CreatedAtAction(nameof(GetById), new { id = id }, command);
         }
 
         [HttpPut("{id}/login")]
