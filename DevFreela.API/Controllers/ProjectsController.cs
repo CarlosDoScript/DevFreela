@@ -1,9 +1,12 @@
-﻿using DevFreela.Application.Commands.CreateProject;
+﻿using DevFreela.Application.Commands.CreateCommentProject;
+using DevFreela.Application.Commands.CreateProject;
 using DevFreela.Application.Commands.DeleteProject;
 using DevFreela.Application.Commands.FinishProject;
 using DevFreela.Application.Commands.StartProject;
+using DevFreela.Application.Commands.UpdateProject;
 using DevFreela.Application.InputModels;
 using DevFreela.Application.Queries.GetAllProjects;
+using DevFreela.Application.Queries.GetCommentsProjectById;
 using DevFreela.Application.Queries.GetProjectById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -53,9 +56,9 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] UpdateProjectInputModel inputModel)
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateProjectCommand command)
         {
-            await _mediator.Send(inputModel);
+            await _mediator.Send(command);
 
             return NoContent();
         }
@@ -70,8 +73,18 @@ namespace DevFreela.API.Controllers
             return NoContent();
         }
 
+        [HttpGet("{id}/comments")]
+        public async Task<IActionResult> GetCommentsProjectById(int id)
+        {
+            var query = new GetCommentsProjectByIdQuery(id);
+
+            var commentsProject = await _mediator.Send(query);
+
+            return Ok(commentsProject);
+        }
+
         [HttpPost("{id}/comments")]
-        public async Task<IActionResult> PostComment(int id, [FromBody] CreateProjectCommand command)
+        public async Task<IActionResult> PostComment(int id, [FromBody] CreateCommentProjectCommand command)
         {
             await _mediator.Send(command);
 
@@ -96,6 +109,6 @@ namespace DevFreela.API.Controllers
             await _mediator.Send(command);
 
             return NoContent();
-        }
+        }       
     }
 }

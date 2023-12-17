@@ -10,11 +10,8 @@ namespace DevFreela.Application.Commands.CreateCommentProject
 {
     public class CreateCommentProjectCommand : IRequest<Unit>
     {
-        public string Content { get; private set; }
-        public int IdProject { get; private set; }
-        public Project Project { get; private set; }
-        public int IdUser { get; private set; }
-        public User User { get; private set; }
-        public DateTime CreatedAt { get; private set; }
+        public string Content { get; set; }
+        public int IdProject { get; set; }
+        public int IdUser { get; set; }
     }
 }

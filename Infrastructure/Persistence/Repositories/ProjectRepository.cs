@@ -47,5 +47,19 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
             await _dbContext.ProjectComments.AddAsync(comment);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<List<ProjectComment>> GetAllCommentsProjectById(int id)
+        {
+            var comments = await _dbContext.ProjectComments
+                .AsNoTracking()
+                .Include(c => c.Project)
+                .Include(c => c.Project.Freelancer)
+                .Include(c => c.Project.Client)
+                .Include(c => c.User)                
+                .Where(c => c.IdProject == id)
+                .ToListAsync();
+
+            return comments;
+        }
     }
 }
