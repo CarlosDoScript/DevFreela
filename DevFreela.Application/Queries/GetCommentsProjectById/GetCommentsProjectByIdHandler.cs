@@ -21,7 +21,7 @@ namespace DevFreela.Application.Queries.GetCommentsProjectById
 
         public async Task<List<CommentProjectViewModel>> Handle(GetCommentsProjectByIdQuery request, CancellationToken cancellationToken)
         {
-            var projectComment = await _projectRepository.GetAllCommentsProjectById(request.Id);
+            var projectComment = await _projectRepository.GetAllCommentProjectByIdAsync(request.Id);
 
             if (projectComment == null)
                 return null;

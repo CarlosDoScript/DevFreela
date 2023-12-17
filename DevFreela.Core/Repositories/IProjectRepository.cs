@@ -13,7 +13,7 @@ namespace DevFreela.Core.Repositories
         Task<Project> GetByIdAsync(int id);
         Task AddAsync(Project project);
         Task SaveChangesAsync();
+        Task<List<ProjectComment>> GetAllCommentProjectByIdAsync(int id);
         Task AddCommentAsync(ProjectComment comment);
-        Task<List<ProjectComment>> GetAllCommentsProjectById(int id);
     }
 }
