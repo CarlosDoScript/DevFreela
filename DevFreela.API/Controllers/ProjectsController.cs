@@ -55,9 +55,6 @@ namespace DevFreela.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] UpdateProjectInputModel inputModel)
         {
-            if (inputModel.Description.Length > 200)
-                return BadRequest();
-
             await _mediator.Send(inputModel);
 
             return NoContent();
