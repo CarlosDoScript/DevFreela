@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Queries.GetCommentsProjectById
 {
-    public class GetCommentsProjectByIdHandler : IRequestHandler<GetCommentsProjectByIdQuery, List<CommentsProjectViewModel>>
+    public class GetCommentsProjectByIdHandler : IRequestHandler<GetCommentsProjectByIdQuery, List<CommentProjectViewModel>>
     {
         private readonly IProjectRepository _projectRepository;
 
@@ -19,7 +19,7 @@ namespace DevFreela.Application.Queries.GetCommentsProjectById
             _projectRepository = projectRepository;
         }
 
-        public async Task<List<CommentsProjectViewModel>> Handle(GetCommentsProjectByIdQuery request, CancellationToken cancellationToken)
+        public async Task<List<CommentProjectViewModel>> Handle(GetCommentsProjectByIdQuery request, CancellationToken cancellationToken)
         {
             var projectComment = await _projectRepository.GetAllCommentsProjectById(request.Id);
 
@@ -27,12 +27,10 @@ namespace DevFreela.Application.Queries.GetCommentsProjectById
                 return null;
 
             var projectComments = projectComment
-              .Select(c => new CommentsProjectViewModel(
+              .Select(c => new CommentProjectViewModel(
+                  c.Id,
                   c.Content,
-                  c.Project.Client.FullName,
-                  c.Project.Freelancer.FullName,
-                  c.Project.Title,
-                  c.Project.Description,
+                  c.User.FullName,
                   c.IdProject,
                   c.IdUser,
                   c.CreatedAt

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Queries.GetCommentsProjectById
 {
-    public class GetCommentsProjectByIdQuery : IRequest<List<CommentsProjectViewModel>>
+    public class GetCommentsProjectByIdQuery : IRequest<List<CommentProjectViewModel>>
     {
         public GetCommentsProjectByIdQuery(int id)
         {
