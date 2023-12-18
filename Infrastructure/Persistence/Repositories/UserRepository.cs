@@ -16,7 +16,7 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
         public UserRepository(DevFreelaDbContext dbContext)
         {
             _dbContext = dbContext;
-        }     
+        }
 
         public async Task<User> GetByIdAsync(int id)
         {
