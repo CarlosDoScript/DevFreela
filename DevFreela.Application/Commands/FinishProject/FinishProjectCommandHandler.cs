@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Commands.FinishProject
 {
-    public class FinishProjectHandler : IRequestHandler<FinishProjectCommand, Unit>
+    public class FinishProjectCommandHandler : IRequestHandler<FinishProjectCommand, Unit>
     {
         private readonly IProjectRepository _projectRepository;
 
-        public FinishProjectHandler(IProjectRepository projectRepository)
+        public FinishProjectCommandHandler(IProjectRepository projectRepository)
         {
             _projectRepository = projectRepository;
         }

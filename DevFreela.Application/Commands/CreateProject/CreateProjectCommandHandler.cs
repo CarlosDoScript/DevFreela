@@ -5,11 +5,11 @@ using MediatR;
 
 namespace DevFreela.Application.Commands.CreateProject
 {
-    public class CreateProjectHandler : IRequestHandler<CreateProjectCommand, int>
+    public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand, int>
     {
         private readonly IProjectRepository _projectRepository;
 
-        public CreateProjectHandler(IProjectRepository projectRepository)
+        public CreateProjectCommandHandler(IProjectRepository projectRepository)
         {
             _projectRepository = projectRepository;
         }

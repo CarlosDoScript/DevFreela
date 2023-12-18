@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Commands.CreateUser
 {
-    public class CreateUserHandler : IRequestHandler<CreateUserCommand, int>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
     {
         private readonly IUserRepository _userRepository;
         private readonly IAuthService _authService;
 
-        public CreateUserHandler(IUserRepository userRepository,IAuthService authService)
+        public CreateUserCommandHandler(IUserRepository userRepository,IAuthService authService)
         {
             _userRepository = userRepository;
             _authService = authService;

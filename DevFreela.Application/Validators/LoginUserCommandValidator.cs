@@ -1,13 +1,17 @@
-﻿using DevFreela.Application.Commands.CreateUser;
+﻿using DevFreela.Application.Commands.LoginUser;
 using DevFreela.Application.Validators.Extensions;
 using FluentValidation;
-using System.Text.RegularExpressions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DevFreela.Application.Validators
 {
-    public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
+    public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
     {
-        public CreateUserCommandValidator()
+        public LoginUserCommandValidator()
         {
             RuleFor(u => u.Email)
                 .EmailAddress()
@@ -16,13 +20,7 @@ namespace DevFreela.Application.Validators
             RuleFor(u => u.Password)
                 .Must(ExthensionMethods.ValidPassword)
                 .WithMessage("Senha deve conter pelo menos 8 caracteres, um número, uma letra maiúscula, uma minúscula, e um caractere especial");
-
-            RuleFor(u => u.FullName)
-                .NotEmpty()
-                .NotNull()
-                .WithMessage("Nome é obrigatório");
+                
         }
-
-      
     }
 }

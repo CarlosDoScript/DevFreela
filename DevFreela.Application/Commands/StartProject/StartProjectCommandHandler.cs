@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Commands.StartProject
 {
-    public class StartProjectHandler : IRequestHandler<StartProjectCommand, Unit>
+    public class StartProjectCommandHandler : IRequestHandler<StartProjectCommand, Unit>
     {
         private readonly IProjectRepository _projectRepository;
 
-        public StartProjectHandler(IProjectRepository projectRepository)
+        public StartProjectCommandHandler(IProjectRepository projectRepository)
         {
             _projectRepository = projectRepository;
         }

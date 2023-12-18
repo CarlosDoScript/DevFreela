@@ -3,11 +3,11 @@ using MediatR;
 
 namespace DevFreela.Application.Commands.DeleteProject
 {
-    public class DeleteProjectHandler : IRequestHandler<DeleteProjectCommand, Unit>
+    public class DeleteProjectCommandHandler : IRequestHandler<DeleteProjectCommand, Unit>
     {
         private readonly IProjectRepository _projectRepository;
 
-        public DeleteProjectHandler(IProjectRepository projectRepository)
+        public DeleteProjectCommandHandler(IProjectRepository projectRepository)
         {
             _projectRepository = projectRepository;
         }
