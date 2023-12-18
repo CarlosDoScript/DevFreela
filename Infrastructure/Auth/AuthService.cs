@@ -1,4 +1,5 @@
-﻿using DevFreela.Core.Services;
+﻿using DevFreela.Core.Enums;
+using DevFreela.Core.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -36,7 +37,7 @@ namespace DevFreela.Infrastructure.Auth
             }
         }
 
-        public string GenerateJwtToken(string email, string role)
+        public string GenerateJwtToken(string email, UserRoleEnum role)
         {
             var issuer = _configuration["Jwt:Issuer"];
             var audience = _configuration["Jwt:Audience"];
@@ -48,7 +49,7 @@ namespace DevFreela.Infrastructure.Auth
             var claims = new List<Claim>
             {
                 new Claim("userName",email),
-                new Claim(ClaimTypes.Role,role)
+                new Claim(ClaimTypes.Role,role.ToString())
             };
 
             var token = new JwtSecurityToken(
