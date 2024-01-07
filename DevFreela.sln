@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevFreela.API", "DevFreela.API\DevFreela.API.csproj", "{1CAA9EE1-D749-473C-ABE0-C65B52ED056C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevFreela.API", "DevFreela.API\DevFreela.API.csproj", "{1CAA9EE1-D749-473C-ABE0-C65B52ED056C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevFreela.Core", "DevFreela.Core\DevFreela.Core.csproj", "{0D149065-F11B-400A-B786-11ECD18BB624}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevFreela.Core", "DevFreela.Core\DevFreela.Core.csproj", "{0D149065-F11B-400A-B786-11ECD18BB624}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevFreela.Infrastructure", "Infrastructure\DevFreela.Infrastructure.csproj", "{9F339149-B742-4B00-A7D9-DBC7A5D5E145}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevFreela.Infrastructure", "Infrastructure\DevFreela.Infrastructure.csproj", "{9F339149-B742-4B00-A7D9-DBC7A5D5E145}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevFreela.Application", "DevFreela.Application\DevFreela.Application.csproj", "{278AD507-562B-40C9-86F0-9EB5D5326642}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevFreela.Application", "DevFreela.Application\DevFreela.Application.csproj", "{278AD507-562B-40C9-86F0-9EB5D5326642}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevFreela.UnitTests", "DevFreela.UnitTests\DevFreela.UnitTests.csproj", "{E2B1EBB9-EAC6-4FEF-860A-A48A3F90A381}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{278AD507-562B-40C9-86F0-9EB5D5326642}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{278AD507-562B-40C9-86F0-9EB5D5326642}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{278AD507-562B-40C9-86F0-9EB5D5326642}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2B1EBB9-EAC6-4FEF-860A-A48A3F90A381}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2B1EBB9-EAC6-4FEF-860A-A48A3F90A381}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2B1EBB9-EAC6-4FEF-860A-A48A3F90A381}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2B1EBB9-EAC6-4FEF-860A-A48A3F90A381}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
