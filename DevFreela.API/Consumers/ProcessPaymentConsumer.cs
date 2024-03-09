@@ -1,4 +1,5 @@
 ﻿
+using DevFreela.API.Models;
 using DevFreela.Application.InputModels;
 using DevFreela.Core.DTOs;
 using DevFreela.Core.Services;
@@ -13,6 +14,7 @@ namespace DevFreela.API.Consumers
     public class ProcessPaymentConsumer : BackgroundService
     {
         private const string QUEUE = "Payments";
+        private const string PAYMENT_APROVED_QUEUE = "PaymentApproved";
         private readonly IConnection _connection;
         private readonly IModel _channel;
         private readonly IServiceProvider _serviceProvider;
@@ -37,6 +39,14 @@ namespace DevFreela.API.Consumers
                 arguments: null
                 );
 
+            _channel.QueueDeclare(
+                queue: PAYMENT_APROVED_QUEUE,
+                durable: false,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null
+                );
+
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -49,7 +59,19 @@ namespace DevFreela.API.Consumers
                 var paymentInfoJson = Encoding.UTF8.GetString(byteArray);
 
                 var paymentInfo = JsonSerializer.Deserialize<PaymentInfoInputModel>(paymentInfoJson);
+                
                 ProcessPayment(paymentInfo);
+
+                var paymentApproved = new PaymentApprovedIntegrationEvent(paymentInfo.IdProject);
+                var paymentApprovedJson = JsonSerializer.Serialize(paymentApproved);
+                var paymentApprovedBytes = Encoding.UTF8.GetBytes(paymentApprovedJson);
+
+                _channel.BasicPublish(
+                    exchange: "",
+                    routingKey: PAYMENT_APROVED_QUEUE,
+                    basicProperties: null,
+                    body: paymentApprovedBytes
+                    );
 
                 _channel.BasicAck(eventsArgs.DeliveryTag,false);
 
