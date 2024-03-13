@@ -22,42 +22,42 @@ namespace DevFreela.Application.Consumers
 
         public PaymentApprovedConsumer(IServiceProvider serviceProvider)
         {
-            _serviceProvider = serviceProvider;
+            //_serviceProvider = serviceProvider;
 
-            var factory = new ConnectionFactory
-            {
-                HostName = "localhost"
-            };
+            //var factory = new ConnectionFactory
+            //{
+            //    HostName = "localhost"
+            //};
 
-            _connection = factory.CreateConnection();
-            _channel = _connection.CreateModel();
+            //_connection = factory.CreateConnection();
+            //_channel = _connection.CreateModel();
 
-            _channel.QueueDeclare(
-                queue: PAYMENT_APPROVED_QUEUE,
-                durable:false,
-                exclusive: false,
-                autoDelete: false,
-                arguments:null
-                );
+            //_channel.QueueDeclare(
+            //    queue: PAYMENT_APPROVED_QUEUE,
+            //    durable:false,
+            //    exclusive: false,
+            //    autoDelete: false,
+            //    arguments:null
+            //    );
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var consumer = new EventingBasicConsumer(_channel);
+            //var consumer = new EventingBasicConsumer(_channel);
 
-            consumer.Received += async (sender, eventArgs) =>
-            {
-                var paymentApprovedBytes = eventArgs.Body.ToArray();
-                var paymentApprovedJson = Encoding.UTF8.GetString(paymentApprovedBytes);
+            //consumer.Received += async (sender, eventArgs) =>
+            //{
+            //    var paymentApprovedBytes = eventArgs.Body.ToArray();
+            //    var paymentApprovedJson = Encoding.UTF8.GetString(paymentApprovedBytes);
 
-                var paymentApprovedIntegrationEvent = JsonSerializer.Deserialize<PaymentApprovedIntegrationEvent>(paymentApprovedJson);
+            //    var paymentApprovedIntegrationEvent = JsonSerializer.Deserialize<PaymentApprovedIntegrationEvent>(paymentApprovedJson);
 
-                await FinishProject(paymentApprovedIntegrationEvent.IdProject);
+            //    await FinishProject(paymentApprovedIntegrationEvent.IdProject);
 
-                _channel.BasicAck(eventArgs.DeliveryTag,false);
-            };
+            //    _channel.BasicAck(eventArgs.DeliveryTag,false);
+            //};
 
-            _channel.BasicConsume(PAYMENT_APPROVED_QUEUE,false,consumer);
+            //_channel.BasicConsume(PAYMENT_APPROVED_QUEUE,false,consumer);
 
             return Task.CompletedTask;
         }

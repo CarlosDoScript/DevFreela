@@ -1,9 +1,7 @@
-﻿
-using DevFreela.API.Models;
+﻿using DevFreela.API.Models;
 using DevFreela.Application.InputModels;
 using DevFreela.Core.DTOs;
 using DevFreela.Core.Services;
-using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
@@ -13,71 +11,71 @@ namespace DevFreela.API.Consumers
 {
     public class ProcessPaymentConsumer : BackgroundService
     {
-        private const string QUEUE = "Payments";
-        private const string PAYMENT_APROVED_QUEUE = "PaymentApproved";
         private readonly IConnection _connection;
         private readonly IModel _channel;
         private readonly IServiceProvider _serviceProvider;
+        private const string QUEUE = "Payments";
+        private const string PAYMENT_APROVED_QUEUE = "PaymentApproved"; 
 
-        public ProcessPaymentConsumer(IConnection connection)
+        public ProcessPaymentConsumer(IServiceProvider serviceProvider)
         {
-            _connection = connection;
+            //_serviceProvider = serviceProvider;
 
-            var factory = new ConnectionFactory
-            {
-                HostName = "localhost"
-            };
+            //var factory = new ConnectionFactory
+            //{
+            //    HostName = "localhost"
+            //};
 
-            _connection = factory.CreateConnection();
-            _channel = connection.CreateModel();
+            //_connection = factory.CreateConnection();
+            //_channel = _connection.CreateModel();
 
-            _channel.QueueDeclare(
-                queue: QUEUE,
-                durable: false,
-                exclusive: false,
-                autoDelete: false,
-                arguments: null
-                );
+            //_channel.QueueDeclare(
+            //    queue: QUEUE,
+            //    durable: false,
+            //    exclusive: false,
+            //    autoDelete: false,
+            //    arguments: null
+            //    );
 
-            _channel.QueueDeclare(
-                queue: PAYMENT_APROVED_QUEUE,
-                durable: false,
-                exclusive: false,
-                autoDelete: false,
-                arguments: null
-                );
+            //_channel.QueueDeclare(
+            //    queue: PAYMENT_APROVED_QUEUE,
+            //    durable: false,
+            //    exclusive: false,
+            //    autoDelete: false,
+            //    arguments: null
+            //    );
 
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var consumer = new EventingBasicConsumer(_channel);
+            //var consumer = new EventingBasicConsumer(_channel);
 
-            consumer.Received += (sender,eventsArgs) =>
-            {
-                var byteArray = eventsArgs.Body.ToArray();
-                var paymentInfoJson = Encoding.UTF8.GetString(byteArray);
+            //consumer.Received += (sender,eventsArgs) =>
+            //{
+            //    var byteArray = eventsArgs.Body.ToArray();
+            //    var paymentInfoJson = Encoding.UTF8.GetString(byteArray);
 
-                var paymentInfo = JsonSerializer.Deserialize<PaymentInfoInputModel>(paymentInfoJson);
+            //    var paymentInfo = JsonSerializer.Deserialize<PaymentInfoInputModel>(paymentInfoJson);
                 
-                ProcessPayment(paymentInfo);
+            //    ProcessPayment(paymentInfo);
 
-                var paymentApproved = new PaymentApprovedIntegrationEvent(paymentInfo.IdProject);
-                var paymentApprovedJson = JsonSerializer.Serialize(paymentApproved);
-                var paymentApprovedBytes = Encoding.UTF8.GetBytes(paymentApprovedJson);
+            //    var paymentApproved = new PaymentApprovedIntegrationEvent(paymentInfo.IdProject);
+            //    var paymentApprovedJson = JsonSerializer.Serialize(paymentApproved);
+            //    var paymentApprovedBytes = Encoding.UTF8.GetBytes(paymentApprovedJson);
 
-                _channel.BasicPublish(
-                    exchange: "",
-                    routingKey: PAYMENT_APROVED_QUEUE,
-                    basicProperties: null,
-                    body: paymentApprovedBytes
-                    );
+            //    _channel.BasicPublish(
+            //        exchange: "",
+            //        routingKey: PAYMENT_APROVED_QUEUE,
+            //        basicProperties: null,
+            //        body: paymentApprovedBytes
+            //        );
 
-                _channel.BasicAck(eventsArgs.DeliveryTag,false);
+            //    _channel.BasicAck(eventsArgs.DeliveryTag,false);
 
-            };
+            //};
 
-            _channel.BasicConsume(QUEUE,false,consumer);
+            //_channel.BasicConsume(QUEUE,false,consumer);
 
             return Task.CompletedTask;
         }

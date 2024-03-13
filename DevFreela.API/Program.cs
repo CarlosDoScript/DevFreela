@@ -26,6 +26,10 @@ builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("DevFreelaCs");
 builder.Services.AddDbContext<DevFreelaDbContext>(p => p.UseSqlServer(connectionString));
+
+//builder.Services.AddHostedService<ProcessPaymentConsumer>();
+builder.Services.AddHostedService<PaymentApprovedConsumer>();
+
 builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
@@ -34,8 +38,6 @@ builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPaymentService,PaymentService>();
 builder.Services.AddScoped<IMessageBusService,MessageBusService>();
-builder.Services.AddHostedService<ProcessPaymentConsumer>();
-builder.Services.AddHostedService<PaymentApprovedConsumer>();
 
 builder.Services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(CreateProjectCommand).Assembly));
 
