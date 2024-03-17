@@ -51,5 +51,14 @@ namespace DevFreela.API.Controllers
 
             return Ok(loginUserViewModel);
         }
+
+        [HttpPut("login/google")]
+        [AllowAnonymous]
+        public async Task<IActionResult> LoginGoogle([FromBody] LoginUserCommand command)
+        {
+            await Task.FromResult(5);
+            return Ok();
+        }
+
     }
 }
