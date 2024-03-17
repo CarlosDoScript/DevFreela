@@ -91,6 +91,24 @@ builder.Services
                  };
              });
 
+builder.Services
+    .AddAuthentication()
+    .AddGoogle(options =>
+    {
+        options.ClientId = configuration["Google:ClientId"];
+        options.ClientSecret = configuration["Google:ClientSecret"];
+    });
+
+builder.Services
+    .AddCors(options =>
+    {
+        options.AddPolicy("AllowClientOrigin",
+            builder => 
+            builder.WithOrigins("https://localhost:7030")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            );
+    });
 
 var app = builder.Build();
 
@@ -99,6 +117,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowClientOrigin");
 
 app.UseHttpsRedirection();
 
