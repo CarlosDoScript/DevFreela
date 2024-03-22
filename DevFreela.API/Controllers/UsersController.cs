@@ -1,15 +1,9 @@
 ﻿using DevFreela.Application.Commands.CreateUser;
 using DevFreela.Application.Commands.LoginUser;
 using DevFreela.Application.Queries.GetUser;
-using DevFreela.Application.ViewModels;
-using DevFreela.Core.Services;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace DevFreela.API.Controllers
 {
@@ -57,29 +51,5 @@ namespace DevFreela.API.Controllers
 
             return Ok(loginUserViewModel);
         }
-
-        [HttpGet("login/google")]
-        [AllowAnonymous]
-        public IActionResult LoginGoogle()
-        {
-            var properties = new AuthenticationProperties { RedirectUri = Url.Action(nameof(GoogleResponse), "Auth") };
-            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
-        }
-
-
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> GoogleResponse()
-        {
-            var authenticateResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
-
-            if (!authenticateResult.Succeeded)
-                return BadRequest("Falha na autenticação com Google");
-
-            var loginGoogleAutenticate = await _mediator.Send(authenticateResult);
-
-            return Ok(loginGoogleAutenticate);
-        }
-
     }
 }
